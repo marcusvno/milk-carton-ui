@@ -1,32 +1,5 @@
-/* .App {
-  text-align: center;
-  background-color: rgb(25, 168, 20);
-  color: white;
-  text-align: center;
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-.App-header {
-  background-color: #282c34;
-  min-height: 20vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  .nav-bar {
-    background-color: blue;
-  }
-}
-*/
-
-.App {
-  font-family: "Inter", sans-serif;
-}
-
 /* html {
-  background-color: #E2EBE6;
+  background-color: rgb(255, 255, 255);
 } */
 
 /* Material UI symbols from the index.html  */
@@ -57,42 +30,8 @@
   border-radius: 25px;
 }
 
-.social-login {
-  margin: 50px;
-  padding: 20px;
-}
-
-.social-button {
-  height: 60px;
-}
-
-.twitter-image {
-  height: 40px;
-  width: 150px;
-}
-
-.facebook-image {
-  height: 60px;
-  width: 150px;
-}
-
-.google-image {
-  height: 40px;
-  width: 150px;
-}
-
-.avatar {
-  height: 50px;
-  width: 50px;
-  border-radius: 20%;
-}
-
 .homepage {
   padding: 4%;
-}
-.folder-pic {
-  height: 60px;
-  width: 60px;
 }
 
 .homepage-header {
@@ -412,4 +351,14 @@
 }
 .rise-shake {
   animation: jump-shaking 0.83s infinite;
+}
+
+.exit-button:hover {
+  background-color: rgb(218, 55, 117) !important;
+  color: white !important;
+}
+
+.wrap {
+  overflow: visible;
+  height: 100%;
 }
