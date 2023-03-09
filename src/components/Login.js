@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import { Register } from "./Register";
 import MuiAlert from "@mui/material/Alert";
 import { Snackbar } from "@mui/material";
+import Box from "@mui/material/Box";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -57,10 +58,10 @@ export const Login = ({ setUser }) => {
           <Sheet
             sx={{
               width: 300,
-              mx: "auto",
-              my: 4,
-              py: 3,
-              px: 2,
+              mx: "auto", // margin left & right
+              my: 4, // margin top & botom
+              py: 3, // padding top & bottom
+              px: 2, // padding left & right
               display: "flex",
               flexDirection: "column",
               gap: 2,
@@ -68,6 +69,25 @@ export const Login = ({ setUser }) => {
               boxShadow: "md",
             }}
           >
+            <Box
+              sx={{
+                border: "7px black solid",
+                padding: "5px 15px 10px 15px",
+                display: "flex",
+              }}
+            >
+              <Typography
+                align="left"
+                sx={{
+                  fontWeight: "900",
+                  fontFamily: "Montserrat",
+                  fontSize: "2.9em",
+                  textTransform: "uppercase",
+                }}
+              >
+                <strong>Forgot Milk?</strong>
+              </Typography>
+            </Box>
             <div>
               <Typography level="h4" component="h1">
                 <b>Welcome!</b>

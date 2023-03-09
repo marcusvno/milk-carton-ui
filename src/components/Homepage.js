@@ -14,8 +14,9 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import Button from "@mui/material/Button";
 import MuiAlert from "@mui/material/Alert";
 import { Snackbar } from "@mui/material";
-import Tooltip from "@mui/material/Tooltip";
-import Card from "@mui/material/Card";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import ExpandCircleDownIcon from "@mui/icons-material/ExpandCircleDown";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -29,24 +30,6 @@ export const Homepage = ({ setUser, username, token }) => {
 
   let active = [];
   let archived = [];
-
-  //console.log(username);
-
-  // const fetchList = () => {
-  //   return axios.get(`https://safe-plains-62725.herokuapp.com/lists/me/`, {
-  //     headers: {
-  //       authorization: `token ${token}`,
-  //     },
-  //   });
-  // };
-
-  // const { isLoading, data } = useQuery("listInfo", fetchList, {
-  //   refetchInterval: 2000,
-  // });
-
-  // if (isLoading) {
-  //   return <h2>Loading...</h2>;
-  // }
 
   //Loods data into useState to prop drill
   useEffect(() => {
@@ -76,11 +59,21 @@ export const Homepage = ({ setUser, username, token }) => {
     return (
       <div>
         <Button
+          color={"secondary"}
           fullWidth
           onClick={() => setExpansion(!isExpanded)}
           // size="large"
           variant="contained"
-          sx={{ mb: "10px" }}
+          sx={{ mb: "10px", backgroundColor: "black" }}
+          endIcon={
+            isExpanded ? (
+              <ExpandCircleDownIcon sx={{ fontSize: "larger" }} />
+            ) : (
+              <ExpandCircleDownIcon
+                sx={{ fontSize: "larger", rotate: "90deg" }}
+              />
+            )
+          }
         >
           <strong>
             Archived Lists {archived.length > 0 ? `(${archived.length})` : null}
@@ -93,6 +86,7 @@ export const Homepage = ({ setUser, username, token }) => {
                 <ListDetails list={list} token={token} username={username} />
               </div>
             ))}
+            <Button disabled hidden style={{ height: "60px" }} />
           </div>
         )}
       </div>
@@ -103,66 +97,123 @@ export const Homepage = ({ setUser, username, token }) => {
   filterList();
 
   return (
-    <section className="homepage">
-      <Snackbar
-        open={snackBar}
-        onClose={() => setSnackBar(false)}
-        autoHideDuration={3000}
-        anchorOrigin={{ horizontal: "center", vertical: "top" }}
-      >
-        <Alert onClose={handleClose} severity="info" sx={{ width: "100%" }}>
-          List Deleted
-        </Alert>
-      </Snackbar>
-      <Typography variant="h4" align="center">
-        <strong>Forgot Milk?</strong>
-      </Typography>
-      <Divider sx={{ m: 2 }} />
-      <div className="active-lists">
-        <Typography variant="h5" sx={{ mb: "5px" }}>
-          My Grocery Lists
-        </Typography>
-        {active.map((list) => (
-          <ListDetails
-            list={list}
-            token={token}
-            key={list.id}
-            username={username}
-          />
-        ))}
-      </div>
-      <Divider sx={{ m: "10px" }} />
-      <div className="shared-lists">
-        <Typography variant="h5" sx={{ mb: "5px" }}>
-          Shared Lists
-        </Typography>
-        {sharedLists.map((list) =>
-          list.archived ? null : (
-            <ListDetails
-              list={list}
-              token={token}
-              key={list.id}
-              username={username}
-            />
-          )
-        )}
-      </div>
-      <Divider sx={{ m: "10px" }} />
-      <ExpandedArchived />
-      <div>
-        <Tooltip title="Logout" arrow>
-          <IconButton
-            sx={{ position: "absolute", top: 18, right: 18 }}
-            onClick={() => setUser(null)}
+    <Paper elevation={20} sx={{ height: 900, margin: "0 auto" }}>
+      <section className="homepage" style={{ margin: "20px" }}>
+        <Snackbar
+          open={snackBar}
+          onClose={() => setSnackBar(false)}
+          autoHideDuration={3000}
+          anchorOrigin={{ horizontal: "center", vertical: "top" }}
+        >
+          <Alert onClose={handleClose} severity="info" sx={{ width: "100%" }}>
+            List Deleted
+          </Alert>
+        </Snackbar>
+        <Box
+          sx={{
+            border: "7px black solid",
+            padding: "5px 15px 10px 15px",
+            display: "flex",
+          }}
+        >
+          <Typography
+            align="left"
+            sx={{
+              fontWeight: "900",
+              fontFamily: "Montserrat",
+              fontSize: "2.9em",
+              textTransform: "uppercase",
+            }}
           >
-            <Link component={RouterLink} to="/Login">
-              <LogoutIcon />
-            </Link>
-          </IconButton>
-        </Tooltip>
-      </div>
+            <strong>Forgot Milk?</strong>
+          </Typography>
+          <div
+            className="exit-button"
+            style={{
+              alignSelf: "center",
+              backgroundColor: "black",
+              borderRadius: "10px",
+              marginLeft: "10px",
+            }}
+          >
+            <IconButton
+              sx={{ margin: "0 auto" }}
+              onClick={() => {
+                setUser(null, null);
+              }}
+            >
+              <Link component={RouterLink} to="/Login" sx={{ color: "white" }}>
+                <LogoutIcon />
+              </Link>
+            </IconButton>
+          </div>
+        </Box>
+        {/* <Divider sx={{ m: 2 }} /> */}
+        <Box
+          sx={{
+            border: "7px black solid",
+            borderBottom: "none",
+            padding: "15px",
+          }}
+        >
+          <div className="active-lists">
+            <Typography
+              sx={{
+                fontSize: "30px",
+                fontWeight: "600",
+                fontFamily: "Montserrat",
+                borderBottom: "5px black solid",
+              }}
+            >
+              My Grocery Lists
+            </Typography>
+            {active.map((list) => (
+              <ListDetails
+                list={list}
+                token={token}
+                key={list.id}
+                username={username}
+              />
+            ))}
+          </div>
+        </Box>
+        {/* <Divider sx={{ m: "10px" }} /> */}
+        <Box
+          sx={{
+            border: "7px black solid",
+            borderTop: "none",
+            padding: "0 15px 15px 15px",
+          }}
+        >
+          <div className="shared-lists">
+            <Typography
+              sx={{
+                mb: "5px",
+                fontSize: "30px",
+                fontWeight: "600",
+                fontFamily: "Montserrat",
+                borderBottom: "5px black solid",
+              }}
+            >
+              Shared Lists
+            </Typography>
+            {sharedLists.map((list) =>
+              list.archived ? null : (
+                <ListDetails
+                  list={list}
+                  token={token}
+                  key={list.id}
+                  username={username}
+                />
+              )
+            )}
+          </div>
+        </Box>
+        <Divider sx={{ m: "10px" }} />
+        <ExpandedArchived />
 
-      <CreateList token={token} />
-    </section>
+        <CreateList token={token} />
+      </section>
+    </Paper>
   );
 };

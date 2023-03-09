@@ -9,6 +9,7 @@ import FormLabel from "@mui/joy/FormLabel";
 import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
 import { Link } from "react-router-dom";
+import Box from "@mui/material/Box";
 
 import axios from "axios";
 import { useParams } from "react-router";
@@ -21,11 +22,13 @@ export default function InviteLogin({ token, setToken }) {
 
   const handleSubmit = (event) => {
     requestLogin(username, password).then((res) => {
+      const inviteToken = res.data.auth_token;
       setToken(res.data.auth_token);
+
       axios
         .get(`https://safe-plains-62725.herokuapp.com/lists/`, {
           headers: {
-            authorization: `token ${token}`,
+            authorization: `token ${inviteToken}`,
           },
         })
         .then((res) => {
@@ -40,15 +43,15 @@ export default function InviteLogin({ token, setToken }) {
                 { username: `${username}` },
                 {
                   headers: {
-                    authorization: `token ${token}`,
+                    authorization: `token ${inviteToken}`,
                   },
                 }
               )
               .then((res) => {
                 navigate(`/lists/edit/${listID}/`, {
                   state: {
-                    token: token,
-                    userame: username,
+                    token: inviteToken,
+                    username: username,
                   },
                 });
               });
@@ -73,6 +76,25 @@ export default function InviteLogin({ token, setToken }) {
           boxShadow: "md",
         }}
       >
+        <Box
+          sx={{
+            border: "7px black solid",
+            padding: "5px 15px 10px 15px",
+            display: "flex",
+          }}
+        >
+          <Typography
+            align="left"
+            sx={{
+              fontWeight: "900",
+              fontFamily: "Montserrat",
+              fontSize: "2.9em",
+              textTransform: "uppercase",
+            }}
+          >
+            <strong>Forgot Milk?</strong>
+          </Typography>
+        </Box>
         <div>
           <Typography level="h4" component="h1">
             <b>Welcome!</b>

@@ -20,6 +20,7 @@ const style = {
   bottom: 35,
   left: "auto",
   position: "fixed",
+  backgroundColor: "black",
 };
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -65,12 +66,13 @@ export default function CreateList({ token }) {
   return (
     <div>
       <Fab
+        className="gradient"
         sx={style}
         // sx={{ position: "absolute", bottom: 40, right: 40 }}
         variant="extended"
-        color="primary"
         onClick={handleClickOpen}
         size="large"
+        color="primary"
       >
         <AddIcon sx={{ mr: 1 }} />
         <strong>New List</strong>
@@ -82,7 +84,9 @@ export default function CreateList({ token }) {
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle>Create a new list?</DialogTitle>
+        <DialogTitle>
+          <strong>Create a new list?</strong>
+        </DialogTitle>
 
         <DialogContent>
           <TextField
@@ -95,8 +99,12 @@ export default function CreateList({ token }) {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleSubmit}>Create list</Button>
+          <Button onClick={handleClose}>
+            <strong>Cancel</strong>
+          </Button>
+          <Button onClick={handleSubmit}>
+            <strong>Create list</strong>
+          </Button>
         </DialogActions>
       </Dialog>
     </div>

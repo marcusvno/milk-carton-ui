@@ -7,8 +7,29 @@ import Divider from "@mui/material/Divider";
 import DeleteItem from "./DeleteItem";
 import FlagIcon from "@mui/icons-material/Flag";
 import { IconButton } from "@mui/material";
+import { useLocation } from "react-router";
 
-export function ShowListItems({ items, setItems, token, listID, scroll }) {
+export function ShowListItems({
+  items,
+  setItems,
+  token,
+  listID,
+  scroll,
+  archiveStatus,
+  owner,
+  username,
+  shoppingStatus,
+}) {
+  const location = useLocation();
+
+  //console.log(shoppingStatus);
+  if (owner === undefined) {
+    const owner = location.state?.owner;
+  }
+  if (username === undefined) {
+    const username = location.state?.username;
+  }
+
   const handleClick = (item) => {
     const newCheckBox = !item.check_box;
 
@@ -75,6 +96,7 @@ export function ShowListItems({ items, setItems, token, listID, scroll }) {
             <Divider />
             <ListItem
               sx={{
+                borderRadius: "10px",
                 backgroundColor: item.missing ? "rgb(214, 155, 149)" : null,
               }}
             >
@@ -83,12 +105,23 @@ export function ShowListItems({ items, setItems, token, listID, scroll }) {
                 onChange={() => handleClick(item)}
               />
 
-              <ListItemText primary={item.item} />
-
-              <IconButton onClick={(e) => handleMissing(item.missing, item.id)}>
-                <FlagIcon />
-              </IconButton>
-
+              <ListItemText
+                primary={item.item}
+                primaryTypographyProps={{
+                  fontSize: "21px",
+                  fontFamily: "Montserrat",
+                }}
+              />
+              {archiveStatus ? null : (
+                <>
+                  {" "}
+                  <IconButton
+                    onClick={(e) => handleMissing(item.missing, item.id)}
+                  >
+                    <FlagIcon />
+                  </IconButton>
+                </>
+              )}
               <DeleteItem
                 token={token}
                 deleteItem={deleteItem}

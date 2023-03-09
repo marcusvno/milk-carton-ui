@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom";
 // import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
-import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import DoubleArrowIcon from "@mui/icons-material/DoubleArrow";
 import { Button } from "@mui/material";
-import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 
 export const ListDetails = ({ list, token, username }) => {
   return (
@@ -20,33 +19,49 @@ export const ListDetails = ({ list, token, username }) => {
       }}
     >
       <Button
-        fullWidth
+        className="list-buttons"
         sx={{
-          mb: 2,
-          justifyContent: "flex-start",
+          mb: "1px",
+          textAlign: "left",
+
           vericalAlign: "center",
-          border: "2px solid",
-          display: "flex",
+          border: "none",
+          color: "black",
           borderRadius: 28,
+
+          ":hover": {
+            bgcolor: "#AF5!important",
+            //            color: "white !important",
+          },
         }}
-        color="primary"
         variant="outlined"
-        startIcon={<FormatListBulletedIcon />}
         key={list.id}
+        startIcon={<DoubleArrowIcon />}
       >
-        <Typography sx={{ mt: 0.56, fontWeight: "bolder" }}>
+        <Typography
+          sx={{
+            justifyText: "left",
+            mt: 0.56,
+            fontSize: "18px",
+            fontWeight: "700",
+            fontFamily: "Montserrat",
+          }}
+        >
           {list.title}
         </Typography>
         <div className="dot-width" />
         {list.active_shopping ? (
-          // <FiberManualRecordIcon
-          //   color="success"
-          //   className="blink"
-          //   fontSize="small"
-          // />
-          <Button color="success" size="small" className="blink">
-            Live
-          </Button>
+          <div
+            style={{
+              color: "green",
+              marginLeft: "10px",
+            }}
+            size="small"
+            className="blink"
+            disabled
+          >
+            <strong style={{ fontSize: "15px" }}>Live</strong>
+          </div>
         ) : null}
       </Button>
     </Link>

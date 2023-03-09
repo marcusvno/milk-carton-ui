@@ -13,9 +13,10 @@ import { ShowListItems } from "./ShowListItems";
 import { SendItems } from "./SendItem";
 import RemoveUser from "./RemoveUser";
 import { useQuery } from "react-query";
+import Paper from "@mui/material/Paper";
 
 const style = {
-  margin: 0,
+  margin: "0 auto",
   top: "auto",
   right: 35,
   bottom: 35,
@@ -45,6 +46,9 @@ export const EditList = ({ token, username, setToken, setUsername }) => {
   if (username === undefined) {
     setUsername(location.state?.username);
   }
+
+  console.log(username);
+  console.log(owner);
 
   useEffect(() => {
     axios
@@ -94,8 +98,8 @@ export const EditList = ({ token, username, setToken, setUsername }) => {
   };
 
   const handleShopping = () => {
-    axios
-      .patch(
+    if (owner === username) {
+      axios.patch(
         `https://safe-plains-62725.herokuapp.com/lists/${listID}/`,
         { active_shopping: true },
         {
@@ -103,15 +107,15 @@ export const EditList = ({ token, username, setToken, setUsername }) => {
             authorization: `token ${token}`,
           },
         }
-      )
-      .then(
-        navigate(`/shopping/${listID}/`, {
-          state: {
-            title: title,
-            id: listID,
-          },
-        })
       );
+    }
+    navigate(`/shopping/${listID}/`, {
+      state: {
+        title: title,
+        owner: owner,
+        username: username,
+      },
+    });
   };
 
   const titleBarButtons = (guests) => {
@@ -128,7 +132,9 @@ export const EditList = ({ token, username, setToken, setUsername }) => {
             owner={owner}
           />
         ) : null}
-
+        {/* {owner === username ? (
+          <DeleteList listID={listID} token={token} title={title} />
+        ) : null} */}
         <DeleteList listID={listID} token={token} title={title} />
       </>
     );
@@ -136,93 +142,156 @@ export const EditList = ({ token, username, setToken, setUsername }) => {
 
   return (
     items && (
-      <div className="wrap">
-        <div className="list">
-          <div className="list-display topbar">
-            <Stack
-              direction="row"
-              justifyContent="space-evenly"
-              alignItems="center"
-              sx={{ mt: 0 }}
-            >
-              <IconButton
-                aria-label="back to homepage"
-                variant="filled"
-                onClick={handleBack}
+      <Paper elevation={20} sx={{ height: 900, margin: "0 auto" }}>
+        <div className="wrap">
+          <div className="list">
+            <div className="list-display topbar">
+              <Stack
+                direction="row"
+                justifyContent="space-evenly"
+                alignItems="center"
+                sx={{ mt: 0 }}
               >
-                <ArrowBackIcon sx={{ ml: "10px" }} />
-              </IconButton>
-              <Typography variant="h5" width="100%" justifyContent="center">
-                {title}
-              </Typography>
-              {username === owner ? (
-                titleBarButtons(hasGuests)
-              ) : owner !== username ? (
-                <RemoveUser
-                  listID={listID}
-                  token={token}
-                  setHasGuests={setHasGuests}
-                  numberShared={numberShared}
-                  owner={owner}
-                  username={username}
-                />
-              ) : null}
-            </Stack>
+                <IconButton
+                  aria-label="back to homepage"
+                  variant="filled"
+                  onClick={handleBack}
+                >
+                  <ArrowBackIcon sx={{ ml: "10px" }} />
+                </IconButton>
+                <Typography
+                  variant="h5"
+                  width="100%"
+                  justifyContent="center"
+                  sx={{
+                    fontFamily: "Montserrat",
+                    fontWeight: "bolder",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {title}
+                </Typography>
+                {username === owner ? (
+                  titleBarButtons(hasGuests)
+                ) : owner !== username ? (
+                  <RemoveUser
+                    listID={listID}
+                    token={token}
+                    setHasGuests={setHasGuests}
+                    numberShared={numberShared}
+                    owner={owner}
+                    username={username}
+                  />
+                ) : null}
+              </Stack>
 
-            <SendItems
+              <SendItems
+                items={items}
+                setItems={setItems}
+                token={token}
+                listID={listID}
+                scroll={scroll}
+              />
+            </div>
+            <ShowListItems
               items={items}
               setItems={setItems}
               token={token}
               listID={listID}
+              flagColor={flagColor}
               scroll={scroll}
+              archiveStatus={archiveStatus}
+              owner={owner}
+              username={username}
+              shoppingStatus={shoppingStatus}
             />
+
+            {archiveStatus ? (
+              owner === username ? (
+                <>
+                  <Fab
+                    sx={{ position: "fixed", bottom: 30, right: 30 }}
+                    color="secondary"
+                    variant="extended"
+                    onClick={handleUnarchive}
+                  >
+                    <UnarchiveIcon sx={{ mr: 1 }} />
+                    <strong>Unarchive List</strong>
+                  </Fab>
+                </>
+              ) : null
+            ) : owner === username ? (
+              fabForUser(
+                handleShopping,
+                listID,
+                token,
+                scroll,
+                owner,
+                username,
+                shoppingStatus
+              )
+            ) : (
+              fabForGuest(
+                handleShopping,
+                listID,
+                token,
+                scroll,
+                owner,
+                username,
+                shoppingStatus
+              )
+            )}
           </div>
-          <ShowListItems
-            items={items}
-            setItems={setItems}
-            token={token}
-            listID={listID}
-            flagColor={flagColor}
-            scroll={scroll}
-          />
-          {archiveStatus ? (
-            <Fab
-              sx={{ position: "fixed", bottom: 30, right: 30 }}
-              color="secondary"
-              variant="extended"
-              onClick={handleUnarchive}
-            >
-              <UnarchiveIcon sx={{ mr: 1 }} />
-              Unarchive List
-            </Fab>
-          ) : owner === username ? (
-            fabForUser(handleShopping)
-          ) : (
-            fabForGuest(handleShopping, shoppingStatus)
-          )}
         </div>
-      </div>
+      </Paper>
     )
   );
 };
 
-function fabForUser(handleShopping) {
+function fabForUser(
+  handleShopping,
+  listID,
+  token,
+  scroll,
+  owner,
+  username,
+  shoppingStatus
+) {
   return (
     <>
       <Fab
         sx={style}
         color="success"
         variant="extended"
-        onClick={handleShopping}
+        onClick={() =>
+          handleShopping(
+            handleShopping,
+            listID,
+            token,
+            scroll,
+            owner,
+            username,
+            shoppingStatus
+          )
+        }
       >
         <ShoppingCartCheckoutIcon sx={{ mr: 1 }} />
-        GO SHOPPING
+        <strong>GO SHOPPING</strong>
       </Fab>
     </>
   );
 }
 
-function fabForGuest(handleShopping, shoppingStatus) {
+function fabForGuest(
+  handleShopping,
+  listID,
+  token,
+  scroll,
+  owner,
+  username,
+  shoppingStatus
+) {
+  console.log("fabforguest");
   return (
     <>
       {shoppingStatus ? (
@@ -231,10 +300,19 @@ function fabForGuest(handleShopping, shoppingStatus) {
           sx={style}
           color="success"
           variant="extended"
-          onClick={handleShopping}
+          onClick={() =>
+            handleShopping(
+              listID,
+              token,
+              scroll,
+              owner,
+              username,
+              shoppingStatus
+            )
+          }
         >
           <ShoppingCartCheckoutIcon sx={{ mr: 1 }} />
-          JOIN SHOPPER
+          <strong>JOIN SHOPPER</strong>
         </Fab>
       ) : null}
     </>

@@ -25,7 +25,11 @@ export default function Shopping({ token }) {
 
   const { listID } = useParams();
   const title = location.state?.title;
-  const scroll = location.state?.scroll;
+  const owner = location.state?.owner;
+  const username = location.state?.username;
+
+  console.log(owner);
+  console.log(username);
 
   const fetchList = () => {
     return axios.get(
@@ -48,6 +52,7 @@ export default function Shopping({ token }) {
 
   const handleBack = (event) => {
     event.preventDefault();
+
     axios
       .patch(
         `https://safe-plains-62725.herokuapp.com/lists/${listID}/`,
@@ -61,7 +66,8 @@ export default function Shopping({ token }) {
       .then((res) => {
         setItems([]);
       });
-      navigate(-1);
+
+    navigate(-1);
   };
 
   const handleShopping = () => {
@@ -93,10 +99,22 @@ export default function Shopping({ token }) {
         >
           <ArrowBackIcon />
         </IconButton>
-        <Typography variant="h5" width="100%" justifyContent="center">
+        <Typography
+          variant="h5"
+          width="100%"
+          justifyContent="center"
+          sx={{
+            fontFamily: "Montserrat",
+            fontWeight: "bolder",
+            textTransform: "uppercase",
+          }}
+        >
           {title}
         </Typography>
-        <DeleteList listID={listID} token={token} title={title} />
+        {owner === username ? (
+          <DeleteList listID={listID} token={token} title={data.data.title} />
+        ) : null}
+        {/* <DeleteList listID={listID} token={token} title={data.data.title} /> */}
       </Stack>
       <SendItems
         items={data.data.listForItems}
@@ -109,18 +127,36 @@ export default function Shopping({ token }) {
         setItems={setItems}
         token={token}
         listID={listID}
-        scroll={scroll}
+        owner={owner}
+        username={username}
+        shoppingStatus={data.data.shopping}
       />
 
-      <Fab
-        sx={{ position: "fixed", bottom: 30, right: 30 }}
-        color="error"
-        variant="extended"
-        onClick={handleShopping}
-      >
-        <ShoppingCartCheckoutIcon sx={{ mr: 1 }} />
-        Finish Shopping & Archive
-      </Fab>
+      {/* <>
+        <Fab
+          sx={{ position: "fixed", bottom: 30, right: 30 }}
+          color="error"
+          variant="extended"
+          onClick={handleShopping}
+        >
+          <ShoppingCartCheckoutIcon sx={{ mr: 1 }} />
+          Finish Shopping & Archive
+        </Fab>
+      </> */}
+
+      {owner === username ? (
+        <>
+          <Fab
+            sx={{ position: "fixed", bottom: 30, right: 30 }}
+            color="error"
+            variant="extended"
+            onClick={handleShopping}
+          >
+            <ShoppingCartCheckoutIcon sx={{ mr: 1 }} />
+            Finish Shopping & Archive
+          </Fab>
+        </>
+      ) : null}
     </div>
   );
 }

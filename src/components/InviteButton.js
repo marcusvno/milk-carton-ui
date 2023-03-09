@@ -27,11 +27,10 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 export default function InviteButton({ listID, authID }) {
   const [open, setOpen] = React.useState(false);
   const [openBar, setOpenBar] = React.useState(false);
-  const inviteLink = `https://dancing-meerkat-788dd9.netlify.app/invite/${listID}/${authID}/`;
+  const inviteLink = `https://forgotmilk.netlify.app/invite/${listID}/${authID}/`;
 
   const handleClickOpen = () => {
     setOpen(true);
-    console.log(inviteLink);
   };
 
   const handleClose = () => {
