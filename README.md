@@ -4,6 +4,7 @@
 
 ## Installation Instructions --> Local Repositories 
 * Clone project from GitHub within your terminal, using the command: [`git clone <Github URL>`]
+
 (You can find this URL above by clicked on the CODE button)
 
 
