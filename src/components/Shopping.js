@@ -21,12 +21,6 @@ const style = {
   top: "880px",
   position: "absolute",
 };
-const paperstyle = {
-  height: 950,
-  width: 400,
-  margin: "0 auto",
-  position: "relative",
-};
 
 export default function Shopping({ token }) {
   const [items, setItems] = useState(null);
@@ -38,9 +32,6 @@ export default function Shopping({ token }) {
   const title = location.state?.title;
   const owner = location.state?.owner;
   const username = location.state?.username;
-
-  console.log(owner);
-  console.log(username);
 
   const fetchList = () => {
     return axios.get(
@@ -152,28 +143,20 @@ export default function Shopping({ token }) {
           shoppingStatus={data.data.shopping}
         />
 
-        {/* <>
-        <Fab
-          sx={{ position: "fixed", bottom: 30, right: 30 }}
-          color="error"
-          variant="extended"
-          onClick={handleShopping}
-        >
-          <ShoppingCartCheckoutIcon sx={{ mr: 1 }} />
-          Finish Shopping & Archive
-        </Fab>
-      </> */}
-
         {owner === username ? (
           <>
             <Fab
-              sx={{ style }}
+              sx={{
+                left: "120px",
+                top: "880px",
+                position: "absolute",
+              }}
               color="error"
               variant="extended"
               onClick={handleShopping}
             >
               <ShoppingCartCheckoutIcon sx={{ mr: 1 }} />
-              Finish Shopping & Archive
+              <strong>Finish Shopping & Archive</strong>
             </Fab>
           </>
         ) : null}

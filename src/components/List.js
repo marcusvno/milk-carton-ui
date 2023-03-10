@@ -20,7 +20,7 @@ export const EditList = ({ token, username, setToken, setUsername }) => {
   const [items, setItems] = useState(null);
   const [authID, setAuthID] = useState("");
   const [title, setTitle] = useState("");
-  const [archiveStatus, setArchivedStatus] = useState(null);
+  const [archiveStatus, setArchiveStatus] = useState(null);
   const [hasGuests, setHasGuests] = useState();
   const [numberShared, setNumberShared] = useState();
   const [flagColor, setFlagColor] = useState("");
@@ -38,9 +38,6 @@ export const EditList = ({ token, username, setToken, setUsername }) => {
     setUsername(location.state?.username);
   }
 
-  console.log(username);
-  console.log(owner);
-
   useEffect(() => {
     axios
       .get(`https://safe-plains-62725.herokuapp.com/lists/${listID}/`, {
@@ -53,7 +50,7 @@ export const EditList = ({ token, username, setToken, setUsername }) => {
         setItems(data.data.listForItems);
         setAuthID(data.data.auth_id);
         setTitle(data.data.title);
-        setArchivedStatus(data.data.archived);
+        setArchiveStatus(data.data.archived);
         setNumberShared(data.data.shared_users.length);
         setShoppingStatus(data.data.active_shopping);
 
@@ -209,7 +206,7 @@ export const EditList = ({ token, username, setToken, setUsername }) => {
               owner === username ? (
                 <>
                   <Fab
-                    sx={{ left: "220px", top: "880px", position: "absolute" }}
+                    sx={{ left: "190px", top: "880px", position: "absolute" }}
                     color="secondary"
                     variant="extended"
                     onClick={handleUnarchive}

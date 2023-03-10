@@ -22,7 +22,6 @@ export function ShowListItems({
 }) {
   const location = useLocation();
 
-  //console.log(shoppingStatus);
   if (owner === undefined) {
     const owner = location.state?.owner;
   }
@@ -89,8 +88,8 @@ export function ShowListItems({
   };
 
   return (
-    <div className="list-container">
-      <List>
+    <div className="list-container scrollinvis">
+      <List className="scrollinvis">
         {items.map((item) => (
           <div key={item.id}>
             <Divider />

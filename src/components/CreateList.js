@@ -63,7 +63,7 @@ export default function CreateList({ token }) {
     <>
       <Fab
         className="gradient"
-        sx={{ left: "220px", top: "880px", position: "absolute" }}
+        sx={{ left: "250px", top: "880px", position: "absolute" }}
         variant="extended"
         onClick={handleClickOpen}
         size="large"

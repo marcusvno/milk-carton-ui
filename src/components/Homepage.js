@@ -27,12 +27,6 @@ const style = {
   top: "880px",
   position: "absolute",
 };
-const paperstyle = {
-  height: 950,
-  width: 400,
-  margin: "0 auto",
-  position: "relative",
-};
 
 export const Homepage = ({ setUser, username, token }) => {
   const [lists, setLists] = useState([]);

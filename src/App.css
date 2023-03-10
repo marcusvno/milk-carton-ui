@@ -3,9 +3,19 @@
 } */
 
 /* Material UI symbols from the index.html  */
-.material-symbols-outlined {
-  font-variation-settings: "FILL" 0, "wght" 500, "GRAD" 0, "opsz" 48;
-  /* margin-right:5px; */
+
+body {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+scrollinvis::-webkit-scrollbar {
+  display: none;
+}
+scrollinvis {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+  overflow: auto;
 }
 
 .login-field {
