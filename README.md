@@ -1,5 +1,5 @@
 # Forgot Milk?
-##A React frontend for a live-updating, shareable grocery list. 
+## A React frontend for a live-updating, shareable grocery list. 
 
 ### Live Demo: https://forgotmilk.netlify.app/
 
