@@ -7,6 +7,7 @@ import { Button } from "@mui/material";
 export const ListDetails = ({ list, token, username }) => {
   return (
     <Link
+      className="homepagelist"
       to={`/lists/edit/${list.id}/`}
       path="relative"
       style={{ textDecoration: "none" }}
@@ -21,7 +22,8 @@ export const ListDetails = ({ list, token, username }) => {
       <Button
         className="list-buttons"
         sx={{
-          mb: "1px",
+          m: "1px",
+
           textAlign: "left",
 
           vericalAlign: "center",

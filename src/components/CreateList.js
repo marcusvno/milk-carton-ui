@@ -14,13 +14,9 @@ import AddIcon from "@mui/icons-material/Add";
 import { Fab } from "@mui/material";
 
 const style = {
-  margin: 0,
-  top: "auto",
-  right: 35,
-  bottom: 35,
-  left: "auto",
-  position: "fixed",
-  backgroundColor: "black",
+  left: "220px",
+  top: "880px",
+  position: "absolute",
 };
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -64,11 +60,10 @@ export default function CreateList({ token }) {
   };
 
   return (
-    <div>
+    <>
       <Fab
         className="gradient"
-        sx={style}
-        // sx={{ position: "absolute", bottom: 40, right: 40 }}
+        sx={{ left: "220px", top: "880px", position: "absolute" }}
         variant="extended"
         onClick={handleClickOpen}
         size="large"
@@ -107,6 +102,6 @@ export default function CreateList({ token }) {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </>
   );
 }

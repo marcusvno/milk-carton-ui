@@ -14,8 +14,19 @@ import DeleteList from "./DeleteList";
 import Typography from "@mui/material/Typography";
 import React from "react";
 import Fab from "@mui/material/Fab";
+import { Paper } from "@mui/material";
 
-//import useWebSocket, { ReadyState } from "react-use-websocket";
+const style = {
+  left: "220px",
+  top: "880px",
+  position: "absolute",
+};
+const paperstyle = {
+  height: 950,
+  width: 400,
+  margin: "0 auto",
+  position: "relative",
+};
 
 export default function Shopping({ token }) {
   const [items, setItems] = useState(null);
@@ -85,54 +96,63 @@ export default function Shopping({ token }) {
   };
 
   return (
-    <div className="list-display">
-      <Stack
-        direction="row"
-        justifyContent="space-evenly"
-        alignItems="center"
-        sx={{ mt: 4 }}
-      >
-        <IconButton
-          aria-label="back to homepage"
-          variant="filled"
-          onClick={handleBack}
+    <Paper
+      elevation={20}
+      sx={{
+        height: 950,
+        width: 400,
+        margin: "0 auto",
+        position: "relative",
+      }}
+    >
+      <div className="list-display">
+        <Stack
+          direction="row"
+          justifyContent="space-evenly"
+          alignItems="center"
+          sx={{ mt: 4 }}
         >
-          <ArrowBackIcon />
-        </IconButton>
-        <Typography
-          variant="h5"
-          width="100%"
-          justifyContent="center"
-          sx={{
-            fontFamily: "Montserrat",
-            fontWeight: "bolder",
-            textTransform: "uppercase",
-          }}
-        >
-          {title}
-        </Typography>
-        {owner === username ? (
-          <DeleteList listID={listID} token={token} title={data.data.title} />
-        ) : null}
-        {/* <DeleteList listID={listID} token={token} title={data.data.title} /> */}
-      </Stack>
-      <SendItems
-        items={data.data.listForItems}
-        setItems={setItems}
-        token={token}
-        listID={listID}
-      />
-      <ShowListItems
-        items={data.data.listForItems}
-        setItems={setItems}
-        token={token}
-        listID={listID}
-        owner={owner}
-        username={username}
-        shoppingStatus={data.data.shopping}
-      />
+          <IconButton
+            aria-label="back to homepage"
+            variant="filled"
+            onClick={handleBack}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+          <Typography
+            variant="h5"
+            width="100%"
+            justifyContent="center"
+            sx={{
+              fontFamily: "Montserrat",
+              fontWeight: "bolder",
+              textTransform: "uppercase",
+            }}
+          >
+            {title}
+          </Typography>
+          {owner === username ? (
+            <DeleteList listID={listID} token={token} title={data.data.title} />
+          ) : null}
+          {/* <DeleteList listID={listID} token={token} title={data.data.title} /> */}
+        </Stack>
+        <SendItems
+          items={data.data.listForItems}
+          setItems={setItems}
+          token={token}
+          listID={listID}
+        />
+        <ShowListItems
+          items={data.data.listForItems}
+          setItems={setItems}
+          token={token}
+          listID={listID}
+          owner={owner}
+          username={username}
+          shoppingStatus={data.data.shopping}
+        />
 
-      {/* <>
+        {/* <>
         <Fab
           sx={{ position: "fixed", bottom: 30, right: 30 }}
           color="error"
@@ -144,19 +164,20 @@ export default function Shopping({ token }) {
         </Fab>
       </> */}
 
-      {owner === username ? (
-        <>
-          <Fab
-            sx={{ position: "fixed", bottom: 30, right: 30 }}
-            color="error"
-            variant="extended"
-            onClick={handleShopping}
-          >
-            <ShoppingCartCheckoutIcon sx={{ mr: 1 }} />
-            Finish Shopping & Archive
-          </Fab>
-        </>
-      ) : null}
-    </div>
+        {owner === username ? (
+          <>
+            <Fab
+              sx={{ style }}
+              color="error"
+              variant="extended"
+              onClick={handleShopping}
+            >
+              <ShoppingCartCheckoutIcon sx={{ mr: 1 }} />
+              Finish Shopping & Archive
+            </Fab>
+          </>
+        ) : null}
+      </div>
+    </Paper>
   );
 }

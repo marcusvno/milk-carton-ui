@@ -362,3 +362,8 @@
   overflow: visible;
   height: 100%;
 }
+
+.homepagelist {
+  display: block;
+  justify-self: left;
+}

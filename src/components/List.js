@@ -15,15 +15,6 @@ import RemoveUser from "./RemoveUser";
 import { useQuery } from "react-query";
 import Paper from "@mui/material/Paper";
 
-const style = {
-  margin: "0 auto",
-  top: "auto",
-  right: 35,
-  bottom: 35,
-  left: "auto",
-  position: "fixed",
-};
-
 export const EditList = ({ token, username, setToken, setUsername }) => {
   const scroll = useRef();
   const [items, setItems] = useState(null);
@@ -142,7 +133,15 @@ export const EditList = ({ token, username, setToken, setUsername }) => {
 
   return (
     items && (
-      <Paper elevation={20} sx={{ height: 900, margin: "0 auto" }}>
+      <Paper
+        elevation={20}
+        sx={{
+          height: 950,
+          width: 400,
+          margin: "0 auto",
+          position: "relative",
+        }}
+      >
         <div className="wrap">
           <div className="list">
             <div className="list-display topbar">
@@ -210,7 +209,7 @@ export const EditList = ({ token, username, setToken, setUsername }) => {
               owner === username ? (
                 <>
                   <Fab
-                    sx={{ position: "fixed", bottom: 30, right: 30 }}
+                    sx={{ left: "220px", top: "880px", position: "absolute" }}
                     color="secondary"
                     variant="extended"
                     onClick={handleUnarchive}
@@ -260,7 +259,7 @@ function fabForUser(
   return (
     <>
       <Fab
-        sx={style}
+        sx={{ left: "220px", top: "880px", position: "absolute" }}
         color="success"
         variant="extended"
         onClick={() =>
@@ -297,7 +296,7 @@ function fabForGuest(
       {shoppingStatus ? (
         <Fab
           className="rise-shake"
-          sx={style}
+          sx={{ left: "220px", top: "880px", position: "absolute" }}
           color="success"
           variant="extended"
           onClick={() =>

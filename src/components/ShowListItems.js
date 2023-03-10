@@ -1,74 +1,73 @@
+import { useQuery } from "react-query";
+import ShoppingCartCheckoutIcon from "@mui/icons-material/ShoppingCartCheckout";
+
+import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { ShowListItems } from "./ShowListItems";
+import { SendItems } from "./SendItem";
+import { useLocation } from "react-router-dom";
 import axios from "axios";
-import Checkbox from "@mui/material/Checkbox";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText";
-import Divider from "@mui/material/Divider";
-import DeleteItem from "./DeleteItem";
-import FlagIcon from "@mui/icons-material/Flag";
-import { IconButton } from "@mui/material";
-import { useLocation } from "react-router";
+import IconButton from "@mui/material/IconButton";
+import Stack from "@mui/material/Stack";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import DeleteList from "./DeleteList";
+import Typography from "@mui/material/Typography";
+import React from "react";
+import Fab from "@mui/material/Fab";
+import { Paper } from "@mui/material";
 
-export function ShowListItems({
-  items,
-  setItems,
-  token,
-  listID,
-  scroll,
-  archiveStatus,
-  owner,
-  username,
-  shoppingStatus,
-}) {
+const style = {
+  left: "220px",
+  top: "880px",
+  position: "absolute",
+};
+const paperstyle = {
+  height: 950,
+  width: 400,
+  margin: "0 auto",
+  position: "relative",
+};
+
+export default function Shopping({ token }) {
+  const [items, setItems] = useState(null);
   const location = useLocation();
+  const navigate = useNavigate("");
+  //const [color, setColor] = useState("success");
 
-  //console.log(shoppingStatus);
-  if (owner === undefined) {
-    const owner = location.state?.owner;
-  }
-  if (username === undefined) {
-    const username = location.state?.username;
-  }
+  const { listID } = useParams();
+  const title = location.state?.title;
+  const owner = location.state?.owner;
+  const username = location.state?.username;
 
-  const handleClick = (item) => {
-    const newCheckBox = !item.check_box;
+  console.log(owner);
+  console.log(username);
 
-    axios
-      .patch(
-        `https://safe-plains-62725.herokuapp.com/items/${item.id}/`,
-        {
-          check_box: newCheckBox,
+  const fetchList = () => {
+    return axios.get(
+      `https://safe-plains-62725.herokuapp.com/lists/${listID}/`,
+      {
+        headers: {
+          authorization: `token ${token}`,
         },
-        {
-          headers: {
-            authorization: `token ${token}`,
-          },
-        }
-      )
-      .then((res) => {
-        axios
-          .get(`https://safe-plains-62725.herokuapp.com/lists/${listID}/`, {
-            headers: {
-              authorization: `token ${token}`,
-            },
-          })
-          .then((res) => {
-            setItems(res.data.listForItems);
-          });
-      });
+      }
+    );
   };
 
-  const deleteItem = (itemID) => {
-    const newItemArray = items.filter((item) => item.id !== itemID);
-    setItems(newItemArray);
-  };
+  const { isLoading, data } = useQuery("listInfo", fetchList, {
+    refetchInterval: 2000,
+  });
 
-  const handleMissing = (flag, itemID) => {
-    const newFlag = !flag;
+  if (isLoading) {
+    return <h2>Loading...</h2>;
+  }
+
+  const handleBack = (event) => {
+    event.preventDefault();
+
     axios
       .patch(
-        `https://safe-plains-62725.herokuapp.com/items/${itemID}/`,
-        { missing: newFlag },
+        `https://safe-plains-62725.herokuapp.com/lists/${listID}/`,
+        { active_shopping: false },
         {
           headers: {
             authorization: `token ${token}`,
@@ -76,64 +75,109 @@ export function ShowListItems({
         }
       )
       .then((res) => {
-        axios
-          .get(`https://safe-plains-62725.herokuapp.com/lists/${listID}/`, {
-            headers: {
-              authorization: `token ${token}`,
-            },
-          })
-          .then((res) => {
-            setItems(res.data.listForItems);
-          });
+        setItems([]);
       });
+
+    navigate(-1);
+  };
+
+  const handleShopping = () => {
+    axios
+      .patch(
+        `https://safe-plains-62725.herokuapp.com/lists/${listID}/`,
+        { archived: true, active_shopping: false },
+        {
+          headers: {
+            authorization: `token ${token}`,
+          },
+        }
+      )
+      .then((res) => navigate("/Homepage"));
   };
 
   return (
-    <div className="list-container">
-      <List>
-        {items.map((item) => (
-          <div key={item.id}>
-            <Divider />
-            <ListItem
-              sx={{
-                borderRadius: "10px",
-                backgroundColor: item.missing ? "rgb(214, 155, 149)" : null,
-              }}
+    <Paper
+      elevation={20}
+      sx={{
+        height: 950,
+        width: 400,
+        margin: "0 auto",
+        position: "relative",
+      }}
+    >
+      <div className="list-display">
+        <Stack
+          direction="row"
+          justifyContent="space-evenly"
+          alignItems="center"
+          sx={{ mt: 4 }}
+        >
+          <IconButton
+            aria-label="back to homepage"
+            variant="filled"
+            onClick={handleBack}
+          >
+            <ArrowBackIcon />
+          </IconButton>
+          <Typography
+            variant="h5"
+            width="100%"
+            justifyContent="center"
+            sx={{
+              fontFamily: "Montserrat",
+              fontWeight: "bolder",
+              textTransform: "uppercase",
+            }}
+          >
+            {title}
+          </Typography>
+          {owner === username ? (
+            <DeleteList listID={listID} token={token} title={data.data.title} />
+          ) : null}
+          {/* <DeleteList listID={listID} token={token} title={data.data.title} /> */}
+        </Stack>
+        <SendItems
+          items={data.data.listForItems}
+          setItems={setItems}
+          token={token}
+          listID={listID}
+        />
+        <ShowListItems
+          items={data.data.listForItems}
+          setItems={setItems}
+          token={token}
+          listID={listID}
+          owner={owner}
+          username={username}
+          shoppingStatus={data.data.shopping}
+        />
+
+        {/* <>
+        <Fab
+          sx={{ position: "fixed", bottom: 30, right: 30 }}
+          color="error"
+          variant="extended"
+          onClick={handleShopping}
+        >
+          <ShoppingCartCheckoutIcon sx={{ mr: 1 }} />
+          Finish Shopping & Archive
+        </Fab>
+      </> */}
+
+        {owner === username ? (
+          <>
+            <Fab
+              sx={{ style }}
+              color="error"
+              variant="extended"
+              onClick={handleShopping}
             >
-              <Checkbox
-                checked={item.check_box}
-                onChange={() => handleClick(item)}
-              />
-
-              <ListItemText
-                primary={item.item}
-                primaryTypographyProps={{
-                  fontSize: "21px",
-                  fontFamily: "Montserrat",
-                }}
-              />
-              {archiveStatus ? null : (
-                <>
-                  {" "}
-                  <IconButton
-                    onClick={(e) => handleMissing(item.missing, item.id)}
-                  >
-                    <FlagIcon />
-                  </IconButton>
-                </>
-              )}
-              <DeleteItem
-                token={token}
-                deleteItem={deleteItem}
-                itemID={item.id}
-              />
-            </ListItem>
-
-            <Divider />
-          </div>
-        ))}
-        <ListItem sx={{ height: "60px" }} ref={scroll}></ListItem>
-      </List>
-    </div>
+              <ShoppingCartCheckoutIcon sx={{ mr: 1 }} />
+              Finish Shopping & Archive
+            </Fab>
+          </>
+        ) : null}
+      </div>
+    </Paper>
   );
 }

@@ -22,6 +22,18 @@ const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
+const style = {
+  left: "220px",
+  top: "880px",
+  position: "absolute",
+};
+const paperstyle = {
+  height: 950,
+  width: 400,
+  margin: "0 auto",
+  position: "relative",
+};
+
 export const Homepage = ({ setUser, username, token }) => {
   const [lists, setLists] = useState([]);
   const [sharedLists, setSharedLists] = useState([]);
@@ -97,7 +109,10 @@ export const Homepage = ({ setUser, username, token }) => {
   filterList();
 
   return (
-    <Paper elevation={20} sx={{ height: 900, margin: "0 auto" }}>
+    <Paper
+      elevation={20}
+      sx={{ height: 950, width: 400, margin: "0 auto", position: "relative" }}
+    >
       <section className="homepage" style={{ margin: "20px" }}>
         <Snackbar
           open={snackBar}
