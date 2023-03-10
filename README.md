@@ -1,8 +1,8 @@
-#Forgot Milk? -- a live-updating, shareable grocery list. 
+# Forgot Milk? -- a live-updating, shareable grocery list. 
 
-## Netlify Link: https://forgotmilk.netlify.app/
+### Live Demo: https://forgotmilk.netlify.app/
 
-## Installation Instructions --> Local Repositories 
+### Installation Instructions --> Local Repositories 
 * Clone project from GitHub within your terminal, using the command: [`git clone <Github URL>`]
 
 (You can find this URL above by clicked on the CODE button)
